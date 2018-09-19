@@ -42,10 +42,10 @@
 		607FACE51AFB9204008FA782 /* PinterestSegment_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PinterestSegment_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
-		6198CE2BF0A594A16F272DE3 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		90251006E2878BBAAC6A5C6E /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		6198CE2BF0A594A16F272DE3 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		90251006E2878BBAAC6A5C6E /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		9999398B6FB4C234AC562837 /* Pods-PinterestSegment_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PinterestSegment_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-PinterestSegment_Example/Pods-PinterestSegment_Example.release.xcconfig"; sourceTree = "<group>"; };
-		B4144E2B708B279BE3C9FEC4 /* PinterestSegment.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = PinterestSegment.podspec; path = ../PinterestSegment.podspec; sourceTree = "<group>"; };
+		B4144E2B708B279BE3C9FEC4 /* PinterestSegment.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = PinterestSegment.podspec; path = ../PinterestSegment.podspec; sourceTree = "<group>"; };
 		EEC26E3EE96B3B7471EB8CBB /* Pods-PinterestSegment_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PinterestSegment_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PinterestSegment_Tests/Pods-PinterestSegment_Tests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -215,6 +215,7 @@
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
+						DevelopmentTeam = 9M58D95D36;
 						LastSwiftMigration = 0900;
 					};
 					607FACE41AFB9204008FA782 = {
@@ -517,6 +518,7 @@
 			baseConfigurationReference = 476300048BFAFAB36C085FBD /* Pods-PinterestSegment_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 9M58D95D36;
 				INFOPLIST_FILE = PinterestSegment/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
@@ -532,6 +534,7 @@
 			baseConfigurationReference = 9999398B6FB4C234AC562837 /* Pods-PinterestSegment_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 9M58D95D36;
 				INFOPLIST_FILE = PinterestSegment/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;

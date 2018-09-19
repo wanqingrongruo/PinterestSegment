@@ -42,7 +42,7 @@ public struct PinterestSegmentStyle {
             reloadData()
         }
     }
-    public var valueChange: ((Int) -> Void)?
+    public var valueChange: ((_ selectedIndex: Int, _ lastIndex: Int, _ title: String) -> Void)?
     private var titleLabels: [UILabel] = []
     public private(set) var selectIndex = 0
 
@@ -131,8 +131,8 @@ public struct PinterestSegmentStyle {
         lastLabel.textColor = style.normalTitleColor
         currentLabel.textColor = style.selectedTitleColor
 
+        valueChange?(index, selectIndex, titles[index])
         selectIndex = index
-        valueChange?(index)
         sendActions(for: UIControlEvents.valueChanged)
     }
 
