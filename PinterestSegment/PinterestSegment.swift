@@ -3,6 +3,7 @@
 //  Demo
 //
 //  Created by Tbxark on 06/12/2016.
+//  Modified by roni on 19/009/2018
 //  Copyright © 2016 Tbxark. All rights reserved.
 //
 
@@ -10,6 +11,7 @@ import UIKit
 
 public struct PinterestSegmentStyle {
 
+    public var bottomColor = UIColor.white
     public var indicatorColor = UIColor(white: 0.95, alpha: 1)
     public var titleMargin: CGFloat = 16
     public var titlePendingHorizontal: CGFloat = 0
@@ -164,6 +166,7 @@ public struct PinterestSegmentStyle {
         let titleY: CGFloat = ( bounds.height - font.lineHeight)/2
 
         scrollView.frame = bounds
+        scrollView.backgroundColor = style.bottomColor
 
         let toToSize: (String) -> CGFloat = { text in
             return (text as NSString).boundingRect(with: CGSize(width: CGFloat(MAXFLOAT), height: 0.0), options: .usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font: font], context: nil).width
@@ -215,6 +218,15 @@ public struct PinterestSegmentStyle {
 
 
 extension PinterestSegment {
+
+    public var bottomColor: UIColor {
+        get {
+            return style.bottomColor
+        }
+        set {
+            style.bottomColor = newValue
+        }
+    }
 
     public var titleFont: UIFont {
         get {

@@ -18,6 +18,7 @@ class ViewController: UIViewController {
         let w = view.frame.width
         let s = PinterestSegment(frame: CGRect(x: 20, y: 200, width: w - 40, height: 40), titles: ["Everything", "Geek", "Humor", "Art", "Food", "Home", "DIY", "Wemoent' Style", "Man's Style", "Beauty", "Travel"])
         var style = PinterestSegmentStyle()
+        style.bottomColor = .white
         style.selectedTitleColor = .red
         style.normalTitleColor = .black
         style.indicatorColor = .red
