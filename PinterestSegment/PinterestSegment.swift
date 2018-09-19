@@ -12,13 +12,14 @@ public struct PinterestSegmentStyle {
 
     public var indicatorColor = UIColor(white: 0.95, alpha: 1)
     public var titleMargin: CGFloat = 16
-    public var titlePendingHorizontal: CGFloat = 14
+    public var titlePendingHorizontal: CGFloat = 0
     public var titlePendingVertical: CGFloat = 14
     public var titleFont = UIFont.boldSystemFont(ofSize: 14)
     public var normalTitleColor = UIColor.lightGray
     public var selectedTitleColor = UIColor.darkGray
+    public var indicatorHeight: CGFloat = 3
+    public var paddingOfTitleWithIndicator: CGFloat = 3
     public init() {}
-    
 }
 
 
@@ -36,10 +37,14 @@ public struct PinterestSegmentStyle {
             setSelectIndex(index: 0, animated: true)
         }
     }
+    public var defaultIndex: Int {
+        didSet {
+            reloadData()
+        }
+    }
     public var valueChange: ((Int) -> Void)?
     private var titleLabels: [UILabel] = []
     public private(set) var selectIndex = 0
-
 
     private let scrollView: UIScrollView = {
         let view = UIScrollView()
@@ -54,47 +59,38 @@ public struct PinterestSegmentStyle {
         return view
     }()
 
-    private let selectContent =  UIView()
     private var indicator: UIView = {
         let ind = UIView()
         ind.layer.masksToBounds = true
         return ind
     }()
-    private let selectedLabelsMaskView: UIView = {
-        let cover = UIView()
-        cover.layer.masksToBounds = true
-        return cover
-    }()
-
-
 
     //MARK:- life cycle
-    public convenience init(frame: CGRect, titles: [String]) {
-        self.init(frame: frame, segmentStyle: PinterestSegmentStyle(), titles:  titles)
+    public convenience init(frame: CGRect, titles: [String], defaultIndex: Int = 0) {
+        self.init(frame: frame, segmentStyle: PinterestSegmentStyle(), titles:  titles, defaultIndex: defaultIndex)
     }
 
-    public init(frame: CGRect, segmentStyle: PinterestSegmentStyle, titles: [String]) {
+    public init(frame: CGRect, segmentStyle: PinterestSegmentStyle, titles: [String], defaultIndex: Int) {
         self.style = segmentStyle
         self.titles = titles
+        self.defaultIndex = defaultIndex
         super.init(frame: frame)
         shareInit()
     }
 
-
     required public init?(coder aDecoder: NSCoder) {
         self.style = PinterestSegmentStyle()
         self.titles = []
+        self.defaultIndex = 0
         super.init(coder: aDecoder)
         shareInit()
     }
-    
-    
+
     private func shareInit() {
         addSubview(UIView()) // fix automaticallyAdjustsScrollViewInsets bug
         addSubview(scrollView)
         reloadData()
     }
-
 
     @objc private func handleTapGesture(_ gesture: UITapGestureRecognizer) {
         let x = gesture.location(in: self).x + scrollView.contentOffset.x
@@ -108,7 +104,6 @@ public struct PinterestSegmentStyle {
     }
 
     public func setSelectIndex(index: Int,animated: Bool = true) {
-
         guard index != selectIndex, index >= 0 , index < titleLabels.count else { return }
 
         let currentLabel = titleLabels[index]
@@ -132,33 +127,33 @@ public struct PinterestSegmentStyle {
             setIndicatorFrame(rect)
         }
 
+        let lastLabel = titleLabels[selectIndex]
+        lastLabel.textColor = style.normalTitleColor
+        currentLabel.textColor = style.selectedTitleColor
+
         selectIndex = index
         valueChange?(index)
         sendActions(for: UIControlEvents.valueChanged)
     }
 
+
     private func setIndicatorFrame(_ frame: CGRect) {
         indicator.frame = frame
-        selectedLabelsMaskView.frame = frame
-
     }
-    
+
     private func clearData() {
         scrollView.subviews.forEach { $0.removeFromSuperview() }
-        selectContent.subviews.forEach { $0.removeFromSuperview() }
         if let gescs = gestureRecognizers {
             for gesc in gescs {
                 removeGestureRecognizer(gesc)
             }
         }
         titleLabels.removeAll()
-
-
     }
 
     private func reloadData() {
         clearData()
-        
+
         guard titles.count > 0  else {
             return
         }
@@ -167,13 +162,8 @@ public struct PinterestSegmentStyle {
         var titleX: CGFloat = 0.0
         let titleH = font.lineHeight
         let titleY: CGFloat = ( bounds.height - font.lineHeight)/2
-        let coverH: CGFloat = font.lineHeight + style.titlePendingVertical
 
-        selectedLabelsMaskView.backgroundColor = UIColor.black
         scrollView.frame = bounds
-        selectContent.frame = bounds
-        selectContent.layer.mask = selectedLabelsMaskView.layer
-        selectedLabelsMaskView.isUserInteractionEnabled = true
 
         let toToSize: (String) -> CGFloat = { text in
             return (text as NSString).boundingRect(with: CGSize(width: CGFloat(MAXFLOAT), height: 0.0), options: .usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font: font], context: nil).width
@@ -193,50 +183,39 @@ public struct PinterestSegmentStyle {
             backLabel.textAlignment = .center
             backLabel.frame = rect
 
-            let frontLabel = UILabel(frame: CGRect.zero)
-            frontLabel.tag = index
-            frontLabel.text = title
-            frontLabel.textColor = style.selectedTitleColor
-            frontLabel.font = style.titleFont
-            frontLabel.textAlignment = .center
-            frontLabel.frame = rect
+            if index == defaultIndex {
+                backLabel.textColor = style.selectedTitleColor
+            }
 
             titleLabels.append(backLabel)
             scrollView.addSubview(backLabel)
-            selectContent.addSubview(frontLabel)
 
             if index == titles.count - 1 {
                 scrollView.contentSize.width = rect.maxX + style.titleMargin
-                selectContent.frame.size.width = rect.maxX + style.titleMargin
             }
         }
 
         // Set Cover
         indicator.backgroundColor = style.indicatorColor
         scrollView.addSubview(indicator)
-        scrollView.addSubview(selectContent)
 
         let coverX = titleLabels[0].frame.origin.x
-        let coverY = (bounds.size.height - coverH) / 2
+        let coverY = titleLabels[0].frame.origin.y + titleLabels[0].frame.size.height + style.paddingOfTitleWithIndicator
         let coverW = titleLabels[0].frame.size.width
 
-        let indRect = CGRect(x: coverX, y: coverY, width: coverW, height: coverH)
+        let indRect = CGRect(x: coverX, y: coverY, width: coverW, height: style.indicatorHeight)
         setIndicatorFrame(indRect)
-
-        indicator.layer.cornerRadius = coverH/2
-        selectedLabelsMaskView.layer.cornerRadius = coverH/2
-
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(PinterestSegment.handleTapGesture(_:)))
         addGestureRecognizer(tapGesture)
-        setSelectIndex(index: 0)
-        
+        setSelectIndex(index: defaultIndex)
+
     }
 }
 
 
 extension PinterestSegment {
-    
+
     public var titleFont: UIFont {
         get {
             return style.titleFont
@@ -254,7 +233,7 @@ extension PinterestSegment {
             style.indicatorColor = newValue
         }
     }
-    
+
     @IBInspectable public var titleMargin: CGFloat {
         get {
             return style.titleMargin
@@ -263,7 +242,7 @@ extension PinterestSegment {
             style.titleMargin = newValue
         }
     }
-    
+
     @IBInspectable public var titlePendingHorizontal: CGFloat {
         get {
             return style.titlePendingHorizontal
@@ -272,7 +251,7 @@ extension PinterestSegment {
             style.titlePendingHorizontal = newValue
         }
     }
-    
+
     @IBInspectable public var titlePendingVertical: CGFloat  {
         get {
             return style.titlePendingVertical
@@ -281,8 +260,8 @@ extension PinterestSegment {
             style.titlePendingVertical = newValue
         }
     }
-    
-    
+
+
     @IBInspectable public var normalTitleColor: UIColor {
         get {
             return style.normalTitleColor
@@ -291,7 +270,7 @@ extension PinterestSegment {
             style.normalTitleColor = newValue
         }
     }
-    
+
     @IBInspectable public var selectedTitleColor: UIColor {
         get {
             return style.selectedTitleColor
@@ -301,4 +280,22 @@ extension PinterestSegment {
         }
     }
 
+    @IBInspectable public var indicatorHeight: CGFloat {
+        get {
+            return style.indicatorHeight
+        }
+        set {
+            style.indicatorHeight = newValue
+        }
+    }
+
+    @IBInspectable public var paddingOfTitleWithIndicator: CGFloat {
+        get {
+            return style.paddingOfTitleWithIndicator
+        }
+        set {
+            style.paddingOfTitleWithIndicator = newValue
+        }
+    }
 }
+
