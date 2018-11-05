@@ -3,13 +3,14 @@ Pod::Spec.new do |s|
   s.version      = "0.0.1"
   s.summary      = "Have a try about pod support."
 
-  s.homepage     = "http://www.baidu.com"
+  s.homepage     = "https://github.com/wanqingrongruo"
   s.license      = { :type => 'MIT', :file => 'LICENSE.txt' }
   s.author       = { "roni" => "https://github.com/wanqingrongruo" }
-  s.source       = { :git => "https://github.com/wanqingrongruo/PinterestSegment"}
+  s.source       = { :git => "https://github.com/wanqingrongruo/PinterestSegment.git"}
+  s.desription   = "PSDemo, having a try about pod support."
 
   # 最低支持版本
-  s.ios.deployment_target = '10.0'
+  s.platform     = :ios, "10.0"
 
   # 源文件
   s.source_files = 'PinterestSegment/*.{swift}'
