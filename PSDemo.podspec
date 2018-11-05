@@ -1,13 +1,13 @@
 Pod::Spec.new do |s|
   s.name         = "PSDemo"
   s.version      = "0.0.1"
-  s.summary      = "Have a try about pod support."
+  s.summary      = "PinterestSegment"
 
   s.homepage     = "https://github.com/wanqingrongruo"
-  s.license      = { :type => 'MIT', :file => 'LICENSE.txt' }
+  s.license      = { :type => 'MIT'}
   s.author       = { "roni" => "https://github.com/wanqingrongruo" }
-  s.source       = { :git => "https://github.com/wanqingrongruo/PinterestSegment.git"}
-  s.desription   = "PSDemo, having a try about pod support."
+  s.source       = { :git => "https://github.com/TBXark/PinterestSegment.git"}
+  s.desription   = "PinterestSegment"
 
   # 最低支持版本
   s.platform     = :ios, "10.0"
